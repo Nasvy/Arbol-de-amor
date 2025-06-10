@@ -1,0 +1,199 @@
+/* Colores de la paleta:
+   #F5F0E1 - Beige claro (fondo original)
+   #3E8B83 - Verde azulado (árbol, botón original)
+   #FF69B4 / #E74C3C - Rosa/Rojo (corazones, contador original)
+
+   Nuevos colores para el tema espacial:
+   #000022 - Azul muy oscuro (fondo principal)
+   #ADF8FC - Azul cian claro (título)
+   #00BFFF - Azul cielo (botón)
+   #FFD700 - Dorado (corazones cayendo)
+   #FFC0CB - Rosa claro (contador)
+   #ADD8E6 - Azul claro suave (texto estático)
+   #E0FFFF - Azul cian muy claro (texto general del timeContainer)
+*/
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #000022; /* Fondo de espacio, azul muy oscuro */
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Para que los elementos que caen no generen barras de desplazamiento */
+    position: relative; /* Necesario para el posicionamiento absoluto de elementos */
+    color: white; /* Color de texto predeterminado blanco para contrastar con el fondo oscuro */
+}
+
+/* Estrellas de fondo */
+.star-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Generar estrellas usando radial-gradient */
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, #fff, rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 40% 70%, #fff, rgba(255,255,255,0)),
+        radial-gradient(2px 2px at 70% 80%, #fff, rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 10% 90%, #fff, rgba(255,255,255,0)),
+        radial-gradient(2px 2px at 80% 10%, #fff, rgba(255,255,255,0)),
+        radial-gradient(1.5px 1.5px at 50% 50%, #fff, rgba(255,255,255,0)),
+        radial-gradient(1.5px 1.5px at 90% 40%, #fff, rgba(255,255,255,0));
+    background-repeat: repeat;
+    background-size: 200px 200px, 150px 150px, 100px 100px, 50px 50px, 250px 250px, 170px 170px, 120px 120px;
+    animation: star-twinkle 15s infinite alternate; /* Animación de parpadeo */
+    z-index: -2; /* Asegura que esté en el fondo de todo */
+}
+
+@keyframes star-twinkle {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(0.7); }
+    100% { filter: brightness(1); }
+}
+
+h1 {
+    color: #ADF8FC; /* Color claro para contrastar con el fondo oscuro, un azul cian claro */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0,255,255,0.3); /* Sombra brillante para el título */
+    z-index: 5; /* Asegura que el título esté por encima */
+}
+
+button {
+    background-color: #00BFFF; /* Un azul cielo para el botón */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.2em;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 191, 255, 0.4); /* Sombra que brilla */
+    transition: transform 0.2s ease-in-out, background-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 20px;
+    z-index: 10; /* Asegurar que el botón esté por encima de otros elementos */
+}
+
+button:hover {
+    background-color: #009ACD; /* Azul más oscuro al pasar el ratón */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 191, 255, 0.6);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 191, 255, 0.4);
+}
+
+canvas {
+    border: 1px solid #333; /* Borde más oscuro para el canvas */
+    background-color: rgba(0,0,0,0.3); /* Fondo semitransparente oscuro para el canvas */
+    display: block;
+    transition: transform 2s ease-out; /* Transición suave para el desplazamiento del canvas */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); /* Borde que brilla suavemente */
+    z-index: 2; /* Por encima del fondo */
+}
+
+/* Estilo para los elementos que caen (ahora círculos simples) */
+.falling-element {
+    position: absolute;
+    font-size: 1.8em; /* Tamaño un poco más grande para los corazones que caen */
+    color: #FFD700; /* Corazones que caen dorados/brillantes */
+    animation: fall linear forwards;
+    pointer-events: none;
+    text-shadow: 0 0 5px rgba(255,215,0,0.7); /* Brillo para los corazones que caen */
+    z-index: 1; /* Asegurar que estén por debajo del árbol si es necesario */
+}
+
+/* ... tu código CSS anterior ... */
+
+@keyframes fall {
+    0% { transform: translateY(0) rotateZ(0deg); opacity: 1; } /* CAMBIO AQUÍ: Removed -50px */
+    100% { transform: translateY(100vh) rotateZ(360deg); opacity: 0; }
+}
+
+/* ... el resto de tu código CSS ... */
+
+/* Nuevo estilo para el contenedor del temporizador CON EL ASTRONAUTA COMO FONDO */
+#timeContainer {
+    position: absolute; /* Posicionamiento absoluto para colocarlo al lado del árbol */
+    right: 5%; /* Distancia desde la derecha */
+    top: 50%; /* Centrado verticalmente */
+    transform: translateY(-50%); /* Ajuste para el centrado vertical */
+    font-size: 1.5em; /* Tamaño de fuente para el texto */
+    color: #E0FFFF; /* Un azul cian muy claro para el texto general del contenedor */
+    text-align: center; /* Centrado para todo el contenido dentro del contenedor */
+    opacity: 0; /* Empieza invisible */
+    transition: opacity 1s ease-in; /* Transición suave para que aparezca */
+    max-width: 40%; /* Limitar el ancho para que no ocupe toda la pantalla */
+    pointer-events: none; /* No interactuable con el ratón */
+    line-height: 1.4; /* Espaciado entre líneas */
+    z-index: 10; /* Asegurar que esté por encima del canvas */
+
+    /* Nuevos estilos para un aspecto más atractivo */
+    /* background-color: rgba(0, 0, 50, 0.7); /* Fondo azul oscuro semitransparente. Lo comentamos para que la imagen sea el fondo principal */
+    padding: 20px; /* **Ajustado**: Padding general para que el texto no toque los bordes del contenedor */
+    /* Puedes ajustar estos padding más finamente si es necesario */
+    
+    border-radius: 15px; /* Esquinas redondeadas */
+    box-shadow: 0 0 25px rgba(0, 191, 255, 0.4), 0 0 10px rgba(0, 191, 255, 0.2) inset; /* Sombra que brilla y un brillo interno */
+    border: 1px solid rgba(0, 191, 255, 0.5); /* Borde brillante */
+    font-family: 'Segoe UI', 'Arial', sans-serif; /* Fuente más moderna */
+
+    /* ESTILOS CLAVE PARA EL ASTRONAUTA COMO IMAGEN DE FONDO */
+    background-image: url('astronaut.png'); /* ¡Asegúrate de que esta ruta sea correcta! */
+    background-size: cover; /* **CAMBIO CLAVE**: La imagen cubrirá todo el contenedor */
+    background-repeat: no-repeat;
+    background-position: center; /* Centrar la imagen en el contenedor */
+    
+    /* Animación de flotación para el astronauta, si deseas que se mueva dentro del contenedor */
+    animation: float-in-container 8s ease-in-out infinite alternate;
+}
+
+#timeContainer.visible {
+    opacity: 1; /* Se hace visible */
+}
+
+#staticText {
+    color: #ADD8E6; /* Un azul claro suave para el texto estático */
+    font-weight: normal;
+    margin-bottom: 5px; /* Espacio debajo del texto estático */
+    display: block; /* Asegura que 'sigo orbitando...' ocupe su propia línea */
+    /* *** NUEVO: Contorno/Resalte para el texto estático *** */
+    text-shadow: 
+        -1px -1px 0 #000,  /* Arriba-izquierda */
+         1px -1px 0 #000,  /* Arriba-derecha */
+        -1px  1px 0 #000,  /* Abajo-izquierda */
+         1px  1px 0 #000,  /* Abajo-derecha */
+         0px  0px 5px rgba(255,255,255,0.7); /* Un brillo suave adicional */
+    /* Puedes ajustar el color y el tamaño de la sombra (#000 es negro) */
+}
+
+#timer {
+    font-weight: bold;
+    color: #FFC0CB; /* Color rosa claro para el contador, que contraste con el fondo oscuro */
+    font-size: 2em; /* Tamaño de fuente un poco más grande para el contador */
+    letter-spacing: 2px; /* Espaciado entre letras */
+    line-height: 1.2; /* Ajuste del interlineado */
+    display: block; /* Para que cada unidad de tiempo esté en una nueva línea */
+    margin-top: 15px; /* Separación del texto estático */
+    /* *** NUEVO: Contorno/Resalte para el temporizador *** */
+    text-shadow: 
+        -1px -1px 0 #000, /* Arriba-izquierda */
+         1px -1px 0 #000, /* Arriba-derecha */
+        -1px  1px 0 #000, /* Abajo-izquierda */
+         1px  1px 0 #000, /* Abajo-derecha */
+         0 0 10px rgba(255,255,255,0.9), /* Brillo más fuerte */
+         0 0 20px rgba(255,192,203,0.5); /* Sombra de color para un efecto de resplandor */
+    /* Puedes ajustar el color y el tamaño de la sombra (#000 es negro) */
+}
+
+/* Animación para el astronauta dentro del contenedor (si deseas que flote) */
+@keyframes float-in-container {
+    0% { background-position: center; } /* Posición inicial: centrado */
+    50% { background-position: center 55%; } /* Se mueve ligeramente hacia abajo */
+    100% { background-position: center; } /* Vuelve a la posición inicial */
+}
+
